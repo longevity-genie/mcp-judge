@@ -1,0 +1,8 @@
+[
+  {
+    "question": "What is 2 + 2?",
+    "expected_tools": [],
+    "expected_parameters": {},
+    "answer": "2 + 2 equals 4."
+  }
+]

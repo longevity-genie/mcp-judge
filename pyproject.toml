@@ -1,0 +1,25 @@
+[project]
+name = "mcp-judge"
+version = "0.1.0"
+description = "CLI and UV tool for benchmarking the performance of MCP servers by realiworld qestions using LLM as a judge approach"
+readme = "README.md"
+authors = [
+    { name = "antonkulaga", email = "antonkulaga@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "just-agents>=0.8.3",
+    "typer>=0.16.0",
+    "eliot>=1.17.5",
+    "rich>=13.0.0",
+    "pydantic>=2.11.7",
+    "python-dotenv>=1.1.1",
+    "pycomfort>=0.0.18",
+]
+
+[project.scripts]
+mcp-judge = "mcp_judge:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
