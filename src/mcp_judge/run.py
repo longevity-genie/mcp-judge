@@ -9,8 +9,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.progress import track
 from eliot import start_action
-
-from mcp_judge.judge import JudgeAgent
+from just_agents.just_tool import JustToolFactory, JustMCPServerParameters
 
 
 app = typer.Typer(help="MCP Judge - CLI tool for evaluating MCP server performance")
@@ -33,18 +32,8 @@ def load_questions_from_file(file_path: Path) -> List[Dict[str, Any]]:
 def create_judge(profiles_file: Path, judge_name: str = "GeminiJudgeAgent") -> JudgeAgent:
     """Create and load a judge agent from profiles."""
     with start_action(action_type="create_judge", profiles_file=str(profiles_file), judge_name=judge_name):
-        try:
-            judge: JudgeAgent = JudgeAgent.auto_load(
-                section_name=judge_name,
-                file_path=profiles_file,
-                parent_section="agent_profiles"
-            )
-            console.print(f"✅ Loaded judge: {judge.shortname}")
-            console.print(f"Model: {judge.llm_options.get('model', 'N/A')}")
-            return judge
-        except Exception as e:
-            console.print(f"❌ Error loading judge: {e}")
-            raise typer.Exit(1)
+        MCPServersConfig
+        tools = JustToolFactory.create_tools_from_mcp(json_config)
 
 
 @app.command()

@@ -1,0 +1,82 @@
+[
+    {
+      "question": "What genes need to be downregulated in worms to extend their lifespan?",
+      "sql": "SELECT HGNC, lifespan_percent_change_mean, lifespan_percent_change_median, main_effect_on_lifespan, model_organism, effect_on_lifespan FROM lifespan_change WHERE model_organism = 'roundworm Caenorhabditis elegans' AND effect_on_lifespan = 'increases lifespan' AND main_effect_on_lifespan = 'loss of function' ORDER BY lifespan_percent_change_mean DESC LIMIT 10",
+      "answer": "Based on the data, downregulating the following genes in *Caenorhabditis elegans* (roundworms) has been shown to extend lifespan. Here are the top 10 genes, ordered by the greatest mean lifespan extension:\n\n1.  **IGF1R** (Insulin-like Growth Factor 1 Receptor): Loss of function can increase mean lifespan by up to 184%.\n2.  **INSR** (Insulin Receptor): Loss of function can increase mean lifespan by up to 184%.\n3.  **PIK3CB** (Phosphatidylinositol-4,5-Bisphosphate 3-Kinase Catalytic Subunit Beta): Loss of function can increase mean lifespan by 160%.\n4.  **PIK3CA** (Phosphatidylinositol-4,5-Bisphosphate 3-Kinase Catalytic Subunit Alpha): Loss of function can increase mean lifespan by 160%.\n5.  **PIK3CD** (Phosphatidylinositol-4,5-Bisphosphate 3-Kinase Catalytic Subunit Delta): Loss of function can increase mean lifespan by 160%.\n6.  **TYMS** (Thymidylate Synthetase): Loss of function can increase mean lifespan by 155.4%.\n\nIt's interesting to note that IGF1R and INSR appear multiple times with slightly different lifespan extension percentages, likely reflecting different experimental conditions or studies. These genes are well-known components of the insulin/IGF-1 signaling pathway, which is a critical regulator of lifespan across many species."
+    },
+    {
+      "question": "What processes are improved in GHR knockout mice?",
+      "sql": "SELECT intervention_improves FROM lifespan_change WHERE HGNC = 'GHR' AND model_organism = 'mouse' AND intervention_method = 'gene knockout'",
+      "answer": "In GHR knockout mice, the following processes are reported to be improved:\n\n*   insulin sensitivity\n*   glucose metabolism\n*   INS/IGFR pathway\n*   muscle\n*   body composition\n\nSpecifically, different studies on GHR knockout mice have shown improvements in:\n*   insulin sensitivity, glucose metabolism, INS/IGFR pathway\n*   insulin sensitivity\n*   INS/IGFR pathway\n*   glucose metabolism, insulin sensitivity, INS/IGFR pathway\n*   glucose metabolism, muscle, body composition, insulin sensitivity, INS/IGFR pathway\n*   glucose metabolism\n\nSome studies reported no specific process improvements."
+    },
+    {
+      "question": "Which genetic intervention led to the greatest increase in lifespan in flies?",
+      "sql": "SELECT HGNC, intervention_method, main_effect_on_lifespan, lifespan_percent_change_mean, lifespan_percent_change_median, model_organism, tissue, diet FROM lifespan_change WHERE model_organism = 'fly Drosophila melanogaster' AND effect_on_lifespan = 'increases lifespan' ORDER BY lifespan_percent_change_mean DESC LIMIT 1",
+      "answer": "The genetic intervention that led to the greatest increase in lifespan in flies (Drosophila melanogaster) is a loss of function of the SLC13A1 gene, achieved by gene modification to reduce gene expression. This intervention resulted in a 92.0% mean increase and a 53.0% median increase in lifespan. The experiment did not specify a particular tissue or diet."
+    },
+    {
+      "question": "To what extent did the lifespan increase in mice overexpressing VEGFA?",
+      "sql": "SELECT HGNC, model_organism, effect_on_lifespan, main_effect_on_lifespan, intervention_method, lifespan_percent_change_mean, lifespan_percent_change_median, lifespan_percent_change_max, doi FROM lifespan_change WHERE HGNC = 'VEGFA' AND model_organism = 'mouse' AND effect_on_lifespan = 'increases lifespan' AND (main_effect_on_lifespan = 'gain of function' OR intervention_method IN ('additional copies of a gene in the genome', 'treatment with vector with additional gene copies', 'tissue-specific gene overexpression', 'additional copies of a gene in transgenic animals', 'gene modification to increase gene expression')) ORDER BY lifespan_percent_change_mean DESC, lifespan_percent_change_median DESC;",
+      "answer": "In studies involving mice overexpressing VEGFA, the following lifespan increases were observed:\n\n1.  **Mean lifespan increase of 51.7%** (median 45.7%, max 33.0%). This was achieved by introducing additional copies of the VEGFA gene. (DOI: 10.1126/science.abc8479)\n2.  **Mean lifespan increase of 41.9%** (median 48.2%, max 30.0%). This was also achieved by introducing additional copies of the VEGFA gene. (DOI: 10.1126/science.abc8479)"
+    },
+    {
+      "question": "Are there any liver-specific interventions that increase lifespan in mice?",
+      "sql": "SELECT HGNC, intervention_method, tissue, lifespan_percent_change_mean, effect_on_lifespan FROM lifespan_change WHERE model_organism = 'mouse' AND effect_on_lifespan = 'increases lifespan' AND tissue = 'liver' ORDER BY lifespan_percent_change_mean DESC",
+      "answer": "Yes, there are liver-specific interventions that have been shown to increase lifespan in mice.\n\nSpecifically, knockout of the IGF1 gene in the liver has been observed to increase lifespan in mice."
+    },
+    {
+      "question": "Which gene-longevity association is confirmed by the greatest number of studies?",
+      "sql": "SELECT HGNC, COUNT(HGNC) as study_count FROM longevity_associations GROUP BY HGNC ORDER BY study_count DESC LIMIT 1",
+      "answer": "The gene-longevity association confirmed by the greatest number of studies is for the gene **FOXO3**, with 28 studies."
+    },
+    {
+      "question": "What polymorphisms in FOXO3 are associated with human longevity?",
+      "sql": "SELECT HGNC, \"polymorphism type\", \"polymorphism id\", \"nucleotide substitution\", \"amino acid substitution\", \"polymorphism — other\", ethnicity, \"study type\" FROM longevity_associations WHERE HGNC = 'FOXO3'",
+      "answer": "The following polymorphisms in the FOXO3 gene have been associated with human longevity:\n\nSNPs:\n*   rs2153960 (Caucasian)\n*   rs2802292 (European, Japanese, Caucasian, mixed ethnicity)\n*   rs10457180 (European, Caucasian)\n*   rs2764264 (Japanese, mixed ethnicity)\n*   rs13217795 (Japanese, mixed ethnicity, Chinese)\n*   rs4946936 (Italian, Calabrian)\n*   rs2802288 (mixed ethnicity)\n*   rs1935949 (Ashkenazi Jewish, Caucasian, Caucasian Ashkenazi Jewish)\n*   rs4946935 (Ashkenazi Jewish, Caucasian, Caucasian Ashkenazi Jewish)\n*   rs9486902 (Caucasian)\n*   rs1044891 (Caucasian)\n*   rs9486913 (Caucasian)\n*   rs3778588 (Caucasian)\n\nHaplotype:\n*   PARP1[rs1136410]+FOXO3[rs479744] (Danish)\n\nThese associations have been identified in various study types, including meta-analyses of GWAS, candidate gene studies, and replications of previous findings, across diverse ethnic populations."
+    },
+    {
+      "question": "In which ethnic groups was the association of the APOE gene with longevity shown?",
+      "sql": "SELECT DISTINCT ethnicity FROM longevity_associations WHERE HGNC = 'APOE'",
+      "answer": "The association of the APOE gene with longevity has been shown in the following ethnic groups:\n\n*   Danish\n*   German\n*   Ashkenazi Jewish\n*   European\n*   European, East Asian, African American\n*   Chinese\n*   Caucasian"
+    },
+    {
+      "question": "Is the INS gene polymorphism associated with longevity?",
+      "sql": "SELECT HGNC, \"polymorphism id\", ethnicity, \"study type\" FROM longevity_associations WHERE HGNC = 'INS'",
+      "answer": "Yes, polymorphisms in the INS gene have been associated with longevity.\n\nHere's the data from the OpenGenes database:\n*   **Gene:** INS\n    *   **Polymorphism ID:** rs3842755\n    *   **Ethnicity:** Danish\n    *   **Study Type:** candidate genes study\n*   **Gene:** INS\n    *   **Polymorphism ID:** n/a\n    *   **Ethnicity:** Italian\n    *   **Study Type:** candidate genes study"
+    },
+    {
+      "question": "What genes are associated with transcriptional alterations?",
+      "sql": "SELECT HGNC, \"hallmarks of aging\" FROM gene_hallmarks WHERE \"hallmarks of aging\" LIKE '%transcriptional alterations%'",
+      "answer": "Okay, I found a number of genes associated with \"transcriptional alterations\". Here are a few examples:\n\n*   **AASS**: Also associated with 'accumulation of reactive oxygen species'.\n*   **ABLIM2**: Primarily associated with 'transcriptional alterations'.\n*   **ACVR2A**: Primarily associated with 'transcriptional alterations'.\n*   **ADRB2**: Also associated with 'AMPK pathway dysregulation'.\n*   **AKT1**: Associated with multiple hallmarks including 'degradation of proteolytic systems', 'TOR pathway dysregulation', 'INS/IGF-1 pathway dysregulation', 'impairment of the mitochondrial integrity and biogenesis', and 'sterile inflammation'.\n\nThere are many more. Would you like to see more genes from this list, or perhaps refine the search? For example, are you interested in genes that are *only* associated with transcriptional alterations, or those that are also linked to other specific hallmarks?"
+    },
+    {
+      "question": "Which hallmarks are associated with the KL gene?",
+      "sql": "SELECT \"hallmarks of aging\" FROM gene_hallmarks WHERE HGNC = 'KL'",
+      "answer": "The KL gene is associated with the following hallmarks of aging:\n* INS/IGF-1 pathway dysregulation\n* sterile inflammation"
+    },
+    {
+      "question": "How many genes are associated with longevity in humans?",
+      "sql": "SELECT COUNT(DISTINCT HGNC) FROM longevity_associations;",
+      "answer": "There are 301 unique genes associated with longevity in humans in the database."
+    },
+    {
+      "question": "What types of studies have been conducted on the IGF1R gene?",
+      "sql": "SELECT DISTINCT \"study type\" FROM longevity_associations WHERE HGNC = 'IGF1R'",
+      "answer": "Based on the data, the following types of studies have been conducted on the IGF1R gene:\n- Candidate genes study\n- Meta-analysis of candidate gene studies"
+    },
+    {
+      "question": "What evidence of the link between PTEN and aging do you know?",
+      "sql": "SELECT HGNC, \"polymorphism id\", \"nucleotide substitution\", \"amino acid substitution\", ethnicity, \"study type\" FROM longevity_associations WHERE HGNC = 'PTEN'",
+      "answer": "Okay, I have the information on longevity associations for PTEN:\n\n**4. Longevity Associations in Human Populations:**\nThe `longevity_associations` table shows one entry for PTEN:\n*   A polymorphism with **ID rs1022427** has been studied in a **Caucasian** population.\n*   The study type was a **'candidate genes study'**.\n*   Details about nucleotide or amino acid substitution are listed as 'n/a' for this specific entry.\n\nIn summary, PTEN is strongly implicated in aging processes. It meets numerous aging-related criteria, is linked to hallmarks like senescent cell accumulation and impaired intercellular communication, and experimental modifications of PTEN have shown significant effects (both positive and negative) on lifespan in various model organisms. Additionally, there is at least one human population study investigating a PTEN polymorphism in relation to longevity."
+    },
+    {
+      "question": "Interventions on which genes extended mice lifespan most of all?",
+      "sql": "SELECT HGNC, lifespan_percent_change_mean, intervention_method, main_effect_on_lifespan FROM lifespan_change WHERE model_organism = 'mouse' AND effect_on_lifespan = 'increases lifespan' ORDER BY lifespan_percent_change_mean DESC LIMIT 10",
+      "answer": "Interventions on the following genes extended mice lifespan the most:\n\n1.  **GHR (Growth Hormone Receptor)**: A gene knockout (loss of function) resulted in a **68.2%** mean increase in lifespan. Another experiment with GHR knockout also showed a **55.0%** increase.\n2.  **PROP1 (PROP Paired-Like Homeobox 1)**: A gene knockout (loss of function) led to a **68.0%** mean increase in lifespan. Another experiment with PROP1 knockout showed a **49.0%** increase.\n3.  **VEGFA (Vascular Endothelial Growth Factor A)**: Introducing additional copies of the gene (gain of function) resulted in a **51.7%** mean increase in lifespan. Another experiment with additional VEGFA copies showed a **41.9%** increase.\n4.  **POU1F1 (POU Class 1 Homeobox 1)**: A gene knockout (loss of function) led to a **48.0%** mean increase in lifespan. Two other experiments with POU1F1 knockout also showed a **42.0%** increase.\n5.  **UCP1 (Uncoupling Protein 1)**: Introducing additional copies of the gene (gain of function) resulted in a **40.7%** mean increase in lifespan."
+    },
+    {
+      "question": "Which knockdowns were most lifespan extending on model animals?",
+      "sql": "SELECT HGNC, model_organism, intervention_method, lifespan_percent_change_mean, effect_on_lifespan FROM lifespan_change WHERE effect_on_lifespan = 'increases lifespan' AND intervention_method IN ('gene knockout', 'RNA interferention', 'interfering RNA transgene', 'gene modification to reduce gene expression', 'tissue-specific gene knockout', 'knockout of gene isoform', 'reduced expression of one of the isoforms in transgenic animals', 'gene modification to reduce protein activity/stability', 'addition to the genome of a dominant-negative gene variant that reduces the activity of an endogenous protein') ORDER BY lifespan_percent_change_mean DESC LIMIT 10;",
+      "answer": "Based on the data, here are some of the knockdowns that were most lifespan-extending in model animals, along with the mean percentage increase in lifespan:\n\n1.  **PIK3CB, PIK3CA, PIK3CD (Gene knockout)** in *roundworm Caenorhabditis elegans*: 160.0% increase.\n2.  **TYMS (Interfering RNA transgene)** in *roundworm Caenorhabditis elegans*: 155.4% increase.\n3.  **MTOR (RNA interference)** in *roundworm Caenorhabditis elegans*: 150.0% increase.\n4.  **PIK3CB, PIK3CA, PIK3CD (Gene knockout)** in *roundworm Caenorhabditis elegans*: 140.0% increase (this appears to be a separate experiment or line from the one above).\n5.  **IGF1R (Gene modification to reduce protein activity/stability)** in *roundworm Caenorhabditis elegans*: 132.0% increase.\n6.  **INSR (Gene modification to reduce protein activity/stability)** in *roundworm Caenorhabditis elegans*: 132.0% increase.\n\nAll the top results listed here are from studies on *Caenorhabditis elegans*."
+    }
+  ] 

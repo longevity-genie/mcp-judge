@@ -1,6 +1,9 @@
 # MCP Judge
 
-A UV-based CLI tool for benchmarking the performance of MCP (Model Context Protocol) servers using LLM-as-a-judge approach with real-world questions.
+uv tool to test MCP servers using LLM-as-a-Judge approach.
+
+Many MCP servers fail in practice because of poorly engineered prompts, tool descriptions and usage examples. This causes LLMs to confuse tools, use wrong parameters, and ultimately fail at their tasks. This problem is magnified in complex workflows that use multiple MCPs, where clear and precise prompts are crucial to avoid tool confusion.
+MCP-Judge solves this by automating testing with an LLM-as-a-Judge approach. It rigorously evaluates how well your LLM can understand and use your tools, ensuring your MCP is robust, reliable, and ready for real-world use. It also allows evaluation of workflows with several MCP servers used together.
 
 ## Features
 
@@ -25,77 +28,8 @@ uv sync
 ```bash
 # Test with default settings (uses Gemini 2.5 Pro)
 uv run mcp-judge run examples/sample_questions.json
-
-# Test multiple models
-uv run mcp-judge run examples/sample_questions.json \
-  --model gemini/gemini-2.5-pro \
-  --model gemini/gemini-2.5-flash \
-  --model claude-3-5-sonnet
-
-# Use custom judge model
-uv run mcp-judge run examples/sample_questions.json \
-  --judge-model gemini/gemini-2.5-pro \
-  --model gemini/gemini-2.5-flash
 ```
 
-### MCP Server Integration
-
-Use the `--mcp-config` option to provide a JSON file with the MCP server configuration. This allows you to connect to any MCP-compliant server and specify which tools to use.
-
-**Example `mcp-config.json`:**
-```json
-{
-  "mcp_endpoint": "python -m your_project.server",
-  "only_include_tools": [
-    "search_targets_to_file",
-    "search_ligands_to_file"
-  ],
-  "exclude_tools": [],
-  "raise_on_incorrect_names": true
-}
-```
-
-**Usage:**
-```bash
-uv run mcp-judge run examples/sample_questions.json \
-  --mcp-config /path/to/your/mcp-config.json
-```
-
-This configuration will load the `search_targets_to_file` and `search_ligands_to_file` tools from the specified MCP server.
-
-### Advanced Options
-
-```bash
-# Verbose output with detailed responses
-uv run mcp-judge run questions.json --verbose
-
-# Save detailed results to file
-uv run mcp-judge run questions.json \
-  --output results.json
-
-# Adjust model temperatures
-uv run mcp-judge run questions.json \
-  --temperature 0.2 \
-  --judge-temperature 0.0
-```
-
-## Question File Format
-
-Questions should be provided in a JSON file with the following structure:
-
-```json
-[
-  {
-    "question": "Find dopamine-related targets and save them to dopamine_targets.json",
-    "expected_tools": ["search_targets_to_file"],
-    "expected_parameters": {
-      "name": "dopamine",
-      "filename": "dopamine_targets.json"
-    },
-    "answer": "Reference answer describing expected tool usage and behavior"
-  }
-]
-```
 
 ### Required Fields
 
@@ -205,7 +139,3 @@ export GOOGLE_API_KEY="your-google-key"
 - `rich>=13.0.0` - Rich terminal output
 - `pydantic>=2.11.7` - Data validation
 - `python-dotenv>=1.1.1` - Environment configuration
-
-## License
-
-Licensed under the same terms as the project.

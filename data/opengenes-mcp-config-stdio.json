@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "opengenes-mcp": {
+      "command": "uvx",
+      "transport": "stdio",
+      "args": ["opengenes-mcp"]
+    }
+  }
+} 
