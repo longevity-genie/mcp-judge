@@ -1,5 +1,6 @@
-"""CLI tool for evaluating MCP server performance using LLM as a judge approach."""
 
+"""""CLI tool for evaluating MCP server performance using LLM as a judge approach."""
+""
 import json
 from pathlib import Path
 from typing import Dict, List, Optional, Any
@@ -10,6 +11,7 @@ from rich.table import Table
 from rich.progress import track
 from eliot import start_action
 from just_agents.just_tool import JustToolFactory, JustMCPServerParameters
+from mcp_judge.judge import JudgeAgent
 
 
 app = typer.Typer(help="MCP Judge - CLI tool for evaluating MCP server performance")
@@ -32,8 +34,9 @@ def load_questions_from_file(file_path: Path) -> List[Dict[str, Any]]:
 def create_judge(profiles_file: Path, judge_name: str = "GeminiJudgeAgent") -> JudgeAgent:
     """Create and load a judge agent from profiles."""
     with start_action(action_type="create_judge", profiles_file=str(profiles_file), judge_name=judge_name):
-        MCPServersConfig
-        tools = JustToolFactory.create_tools_from_mcp(json_config)
+        # Load judge agent from profiles - no tools needed for JudgeAgent as it only evaluates responses
+        judge = JudgeAgent.auto_load(section_name=judge_name, file_path=profiles_file)
+        return judge
 
 
 @app.command()

@@ -5,7 +5,7 @@ from litellm import BaseModel
 
 class Judgement(BaseModel):
     passed: bool
-    reason: Optional[str]
+    reason: Optional[str] | List[str]
     raw_result: str
 
 class JudgeAgent(BaseAgent):

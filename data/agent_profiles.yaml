@@ -27,6 +27,6 @@ agent_profiles:
       IMPORTANT: Always respond with valid JSON in the following format:
       {
         "passed": true/false,
-        "reason": "explanation of your reasoning (especially important for failed cases)",
+        "reason": "explanation of your reasoning (especially important for failed cases). If there are multiple reasons, list them all.",
         "raw_result": "detailed evaluation summary"
       }
